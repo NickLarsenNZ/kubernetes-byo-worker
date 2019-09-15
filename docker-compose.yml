@@ -2,14 +2,35 @@ version: "3.7"
 services:
 
   kube-apiserver:
+    # https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/kube-apiserver-amd64
     image: k8s.gcr.io/kube-apiserver-amd64:v${KUBE_VERSION:-1.15.3}
     command: 
       - kube-apiserver
-      - --etcd-servers=localhost:1234
+      - --etcd-servers=etcd:2379
     ports:
       - ${KUBE_APISERVER_PORT:-6443}
+    networks:
+      - kube-master
+    depends_on:
+      - etcd
+
+  etcd:
+    # https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/etcd-amd64
+    image: k8s.gcr.io/etcd-amd64:${ETCD_VERSION:-3.3.15}
+    command:
+      - etcd
+      - --listen-client-urls=http://0.0.0.0:2379
+      - --advertise-client-urls=http://etcd:2379
+
+    ports:
+      - "2379"
+    volumes:
+      - etcd-data:/var/lib/etcd
     networks:
       - kube-master
 
 networks:
   kube-master:
+
+volumes:
+  etcd-data:
