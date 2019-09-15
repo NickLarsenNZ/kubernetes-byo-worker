@@ -1,17 +1,35 @@
 version: "3.7"
 services:
 
+  bootstrap-token:
+    image: busybox
+    init: true
+    command:
+      - sh
+      - -c
+      - |
+        TOKEN=$$(head -c 16 /dev/urandom | od -An -t x | tr -d ' ')
+        echo "$${TOKEN},dummy,10001,\"system:bootstrappers\"" > /token-data/temporary-tokens
+        echo "Token: $${TOKEN}"
+    volumes:
+      - token-data:/token-data
+
   kube-apiserver:
     # https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/kube-apiserver-amd64
     image: k8s.gcr.io/kube-apiserver-amd64:v${KUBE_VERSION:-1.15.3}
     command: 
       - kube-apiserver
-      - --etcd-servers=etcd:2379
+      - --etcd-servers=http://etcd:2379
+      #- --authorization-mode=RBAC
+      - --token-auth-file=/token-data/temporary-tokens
     ports:
-      - ${KUBE_APISERVER_PORT:-6443}
+      - ${KUBE_APISERVER_PORT:-6443}:6443
+    volumes:
+      - token-data:/token-data
     networks:
       - kube-master
     depends_on:
+      - bootstrap-token
       - etcd
 
   etcd:
@@ -21,7 +39,7 @@ services:
       - etcd
       - --listen-client-urls=http://0.0.0.0:2379
       - --advertise-client-urls=http://etcd:2379
-
+      - --data-dir=/var/lib/etcd
     ports:
       - "2379"
     volumes:
@@ -33,4 +51,5 @@ networks:
   kube-master:
 
 volumes:
+  token-data:
   etcd-data:
