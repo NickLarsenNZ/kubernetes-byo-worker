@@ -2,12 +2,12 @@ version: "3.7"
 services:
 
   kube-apiserver:
-    image: k8s.gcr.io/kube-apiserver-amd64:v1.15.3
+    image: k8s.gcr.io/kube-apiserver-amd64:v${KUBE_VERSION:-1.15.3}
     command: 
       - kube-apiserver
       - --etcd-servers=localhost:1234
     ports:
-      - "6443"
+      - ${KUBE_APISERVER_PORT:-6443}
     networks:
       - kube-master
 
