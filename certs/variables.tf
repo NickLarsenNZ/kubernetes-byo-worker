@@ -1,0 +1,29 @@
+variable "worker_count" {
+    default = 3
+}
+
+variable "worker_prefix" {
+    description = "Worker hostname prefix (before numbering)"
+    default = "worker"
+}
+
+variable "worker_index_start" {
+    description = "Worker hostname starting index"
+    default = 0
+}
+
+
+variable "worker_index_zero_pad" {
+    description = "Worker hostname index padding"
+    default = 2
+}
+
+variable "worker_suffix" {
+    description = "Worker hostname suffix (after numbering)"
+    default = ""
+}
+
+variable "worker_domain_name" {
+    description = "Domain name of the workers"
+    default = "local"
+}
