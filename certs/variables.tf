@@ -27,3 +27,8 @@ variable "worker_domain_name" {
     description = "Domain name of the workers"
     default = "local"
 }
+
+variable "apiserver_fqdn" {
+    description = "Full DNS name for accessing the Kubernetes API from outside the cluster"
+    default = "kubernetes.local"
+}
