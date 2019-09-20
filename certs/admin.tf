@@ -1,6 +1,6 @@
 resource "tls_private_key" "admin" {
-    algorithm   = "RSA"
-    ecdsa_curve = "2048"
+  algorithm   = "RSA"
+  ecdsa_curve = "2048"
 }
 
 resource "tls_locally_signed_cert" "admin" {
@@ -19,14 +19,24 @@ resource "tls_locally_signed_cert" "admin" {
 }
 
 resource "tls_cert_request" "admin" {
-    key_algorithm   = "RSA"
-    private_key_pem = "${tls_private_key.admin.private_key_pem}"
+  key_algorithm   = "RSA"
+  private_key_pem = "${tls_private_key.admin.private_key_pem}"
 
-    subject {
-        common_name  = "kubernetes"
-        organizational_unit = "Kubernetes Pros"
-        organization = "system:masters"
-        locality = "Your City"
-        country = "NZ"
-    }
+  subject {
+    common_name         = "kubernetes"
+    organizational_unit = "Kubernetes Pros"
+    organization        = "system:masters"
+    locality            = "Your City"
+    country             = "NZ"
+  }
+}
+
+resource "local_file" "admin_public" {
+  content  = "${tls_locally_signed_cert.admin.cert_pem}"
+  filename = "${path.module}/output/admin_public.pem"
+}
+
+resource "local_file" "admin_private" {
+  content  = "${tls_private_key.admin.private_key_pem}"
+  filename = "${path.module}/output/admin_private.pem"
 }

@@ -1,6 +1,6 @@
 resource "tls_private_key" "apiserver" {
-    algorithm   = "RSA"
-    ecdsa_curve = "2048"
+  algorithm   = "RSA"
+  ecdsa_curve = "2048"
 }
 
 resource "tls_locally_signed_cert" "apiserver" {
@@ -19,29 +19,41 @@ resource "tls_locally_signed_cert" "apiserver" {
 }
 
 resource "tls_cert_request" "apiserver" {
-    key_algorithm   = "RSA"
-    private_key_pem = "${tls_private_key.apiserver.private_key_pem}"
+  key_algorithm   = "RSA"
+  private_key_pem = "${tls_private_key.apiserver.private_key_pem}"
 
-    subject {
-        common_name  = "kubernetes"
-        organizational_unit = "Kubernetes Pros"
-        organization = "ACME Ltd"
-        locality = "Your City"
-        country = "NZ"
-    }
+  subject {
+    common_name         = "kubernetes"
+    organizational_unit = "Kubernetes Pros"
+    organization        = "ACME Ltd"
+    locality            = "Your City"
+    country             = "NZ"
+  }
 
-    dns_names = [
-        "${var.apiserver_fqdn}",
-        "kubernetes",
-        "kubernetes.default",
-        "kubernetes.default.svc",
-        "kubernetes.default.svc.cluster",
-        "kubernetes.svc.cluster.local",
-    ]
+  dns_names = [
+    "${var.apiserver_fqdn}",
+    "kubernetes",
+    "kubernetes.default",
+    "kubernetes.default.svc",
+    "kubernetes.default.svc.cluster",
+    "kubernetes.svc.cluster.local",
+  ]
 
-    ip_addresses = [
-        "127.0.0.1",
-        "10.32.0.1",
-        "10.240.0.10","10.240.0.11","10.240.0.12"
-    ]
+  ip_addresses = [
+    "127.0.0.1",
+    "10.32.0.1",
+    "10.240.0.10",
+    "10.240.0.11",
+    "10.240.0.12",
+  ]
+}
+
+resource "local_file" "apiserver_public" {
+  content  = "${tls_locally_signed_cert.apiserver.cert_pem}"
+  filename = "${path.module}/output/apiserver_public.pem"
+}
+
+resource "local_file" "apiserver_private" {
+  content  = "${tls_private_key.apiserver.private_key_pem}"
+  filename = "${path.module}/output/apiserver_private.pem"
 }

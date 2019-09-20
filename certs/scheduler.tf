@@ -1,6 +1,6 @@
 resource "tls_private_key" "scheduler" {
-    algorithm   = "RSA"
-    ecdsa_curve = "2048"
+  algorithm   = "RSA"
+  ecdsa_curve = "2048"
 }
 
 resource "tls_locally_signed_cert" "scheduler" {
@@ -19,14 +19,24 @@ resource "tls_locally_signed_cert" "scheduler" {
 }
 
 resource "tls_cert_request" "scheduler" {
-    key_algorithm   = "RSA"
-    private_key_pem = "${tls_private_key.scheduler.private_key_pem}"
+  key_algorithm   = "RSA"
+  private_key_pem = "${tls_private_key.scheduler.private_key_pem}"
 
-    subject {
-        common_name  = "system:kube-scheduler"
-        organizational_unit = "Kubernetes Pros"
-        organization = "system:kube-scheduler"
-        locality = "Your City"
-        country = "NZ"
-    }
+  subject {
+    common_name         = "system:kube-scheduler"
+    organizational_unit = "Kubernetes Pros"
+    organization        = "system:kube-scheduler"
+    locality            = "Your City"
+    country             = "NZ"
+  }
+}
+
+resource "local_file" "scheduler_public" {
+  content  = "${tls_locally_signed_cert.scheduler.cert_pem}"
+  filename = "${path.module}/output/scheduler_public.pem"
+}
+
+resource "local_file" "scheduler_private" {
+  content  = "${tls_private_key.scheduler.private_key_pem}"
+  filename = "${path.module}/output/scheduler_private.pem"
 }

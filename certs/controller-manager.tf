@@ -1,6 +1,6 @@
 resource "tls_private_key" "cm" {
-    algorithm   = "RSA"
-    ecdsa_curve = "2048"
+  algorithm   = "RSA"
+  ecdsa_curve = "2048"
 }
 
 resource "tls_locally_signed_cert" "cm" {
@@ -19,14 +19,24 @@ resource "tls_locally_signed_cert" "cm" {
 }
 
 resource "tls_cert_request" "cm" {
-    key_algorithm   = "RSA"
-    private_key_pem = "${tls_private_key.cm.private_key_pem}"
+  key_algorithm   = "RSA"
+  private_key_pem = "${tls_private_key.cm.private_key_pem}"
 
-    subject {
-        common_name  = "system:kube-controller-manager"
-        organizational_unit = "Kubernetes Pros"
-        organization = "system:kube-controller-manager"
-        locality = "Your City"
-        country = "NZ"
-    }
+  subject {
+    common_name         = "system:kube-controller-manager"
+    organizational_unit = "Kubernetes Pros"
+    organization        = "system:kube-controller-manager"
+    locality            = "Your City"
+    country             = "NZ"
+  }
+}
+
+resource "local_file" "cm_public" {
+  content  = "${tls_locally_signed_cert.cm.cert_pem}"
+  filename = "${path.module}/output/cm_public.pem"
+}
+
+resource "local_file" "cm_private" {
+  content  = "${tls_private_key.cm.private_key_pem}"
+  filename = "${path.module}/output/cm_private.pem"
 }
