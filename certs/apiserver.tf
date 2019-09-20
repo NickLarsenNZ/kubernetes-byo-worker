@@ -37,6 +37,7 @@ resource "tls_cert_request" "apiserver" {
     "kubernetes.default.svc",
     "kubernetes.default.svc.cluster",
     "kubernetes.svc.cluster.local",
+    "localhost",
   ]
 
   ip_addresses = [
