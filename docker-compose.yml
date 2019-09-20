@@ -12,16 +12,16 @@ services:
       - |
         # check to see if certs
         cd /tf
-        pwd
-        ls -al
         terraform -version
         terraform init
         terraform plan -out tfplan
         terraform apply tfplan
+
+        cd output/
+        cp -v apiserver_*.pem ca_public.pem service-account-ca_public.pem /certs/apiserver/
     volumes:
-      - type: bind
-        source: ./certs
-        target: /tf
+      - ./certs:/tf
+      - certs-apiserver:/certs/apiserver
 
   bootstrap-token:
     image: busybox
@@ -37,6 +37,7 @@ services:
       - token-data:/token-data
 
   kube-apiserver:
+    restart: always
     # https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/kube-apiserver-amd64
     image: k8s.gcr.io/kube-apiserver-amd64:v${KUBE_VERSION:-1.15.3}
     command: 
@@ -44,17 +45,28 @@ services:
       - --etcd-servers=http://etcd:2379
       #- --authorization-mode=RBAC
       - --token-auth-file=/token-data/temporary-tokens
+      - --client-ca-file=/run/config/pki/ca_public.pem
+      - --kubelet-certificate-authority=/run/config/pki/ca_public.pem
+      - --kubelet-client-certificate=/run/config/pki/apiserver_public.pem
+      - --kubelet-client-key=/run/config/pki/apiserver_private.pem
+      - --kubelet-https=true
+      - --service-account-key-file=/run/config/pki/service-account-ca_public.pem
+      - --tls-cert-file=/run/config/pki/apiserver_public.pem
+      - --tls-private-key-file=/run/config/pki/apiserver_private.pem
     ports:
       - ${KUBE_APISERVER_PORT:-6443}:6443
     volumes:
       - token-data:/token-data
+      - certs-apiserver:/run/config/pki
     networks:
       - kube-master
     depends_on:
+      - bootstrap-certs
       - bootstrap-token
       - etcd
 
   etcd:
+    restart: always
     # https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/etcd-amd64
     image: k8s.gcr.io/etcd-amd64:${ETCD_VERSION:-3.3.15}
     command:
@@ -68,6 +80,8 @@ services:
       - etcd-data:/var/lib/etcd
     networks:
       - kube-master
+    depends_on:
+      - bootstrap-certs
 
 networks:
   kube-master:
@@ -75,4 +89,4 @@ networks:
 volumes:
   token-data:
   etcd-data:
-  terraform-certs:
+  certs-apiserver:
