@@ -1,6 +1,28 @@
 version: "3.7"
 services:
 
+  bootstrap-certs:
+    image: hashicorp/terraform
+    init: true
+    environment:
+      TF_IN_AUTOMATION: 1
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        # check to see if certs
+        cd /tf
+        pwd
+        ls -al
+        terraform -version
+        terraform init
+        terraform plan -out tfplan
+        terraform apply tfplan
+    volumes:
+      - type: bind
+        source: ./certs
+        target: /tf
+
   bootstrap-token:
     image: busybox
     init: true
@@ -53,3 +75,4 @@ networks:
 volumes:
   token-data:
   etcd-data:
+  terraform-certs:
