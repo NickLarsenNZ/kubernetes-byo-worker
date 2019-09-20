@@ -24,19 +24,6 @@ services:
       - ./certs:/tf
       - certs-apiserver:/certs/apiserver
 
-  bootstrap-token:
-    image: busybox
-    init: true
-    command:
-      - sh
-      - -c
-      - |
-        TOKEN=$$(head -c 16 /dev/urandom | od -An -t x | tr -d ' ')
-        echo "$${TOKEN},dummy,10001,\"system:bootstrappers\"" > /token-data/temporary-tokens
-        echo "Token: $${TOKEN}"
-    volumes:
-      - token-data:/token-data
-
   kube-apiserver:
     restart: always
     # https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/kube-apiserver-amd64
@@ -44,8 +31,7 @@ services:
     command: 
       - kube-apiserver
       - --etcd-servers=http://etcd:2379
-      #- --authorization-mode=RBAC
-      - --token-auth-file=/token-data/temporary-tokens
+      - --authorization-mode=Node,RBAC
       - --client-ca-file=/run/config/pki/ca_public.pem
       - --kubelet-certificate-authority=/run/config/pki/ca_public.pem
       - --kubelet-client-certificate=/run/config/pki/apiserver_public.pem
@@ -57,13 +43,11 @@ services:
     ports:
       - ${KUBE_APISERVER_PORT:-6443}:6443
     volumes:
-      - token-data:/token-data
       - certs-apiserver:/run/config/pki
     networks:
       - kube-master
     depends_on:
       - bootstrap-certs
-      - bootstrap-token
       - etcd
 
   etcd:
@@ -88,6 +72,5 @@ networks:
   kube-master:
 
 volumes:
-  token-data:
   etcd-data:
   certs-apiserver:
