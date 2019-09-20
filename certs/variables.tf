@@ -31,3 +31,8 @@ variable "apiserver_fqdn" {
   description = "Full DNS name for accessing the Kubernetes API from outside the cluster"
   default     = "kubernetes.local"
 }
+
+variable "apiserver_port" {
+  description = "kube-apiserver port (for the generated kubeconfig)"
+  default     = 6443
+}
