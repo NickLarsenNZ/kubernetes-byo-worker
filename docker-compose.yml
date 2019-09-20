@@ -6,6 +6,7 @@ services:
     init: true
     environment:
       TF_IN_AUTOMATION: 1
+      TF_VAR_apiserver_port: ${KUBE_APISERVER_PORT:-6443}
     entrypoint: /bin/sh
     command:
       - -c
