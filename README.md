@@ -24,7 +24,7 @@ kubectl --kubeconfig=certs/output/kubeconfig get nodes
 Create a PKCS12 (PFX) of the admin key pair.
 
 ```sh
-openssl pkcs12 -export -out ~/admin.pfx -inkey output/admin_private.pem -in output/admin_public.pem
+openssl pkcs12 -export -out ~/admin.pfx -inkey certs/output/admin_private.pem -in certs/output/admin_public.pem
 ```
 
 1. Import the PFX into your browser's identity store
