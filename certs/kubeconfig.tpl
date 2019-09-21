@@ -3,7 +3,7 @@ kind: Config
 clusters:
 - cluster:
     certificate-authority-data: ${ca_cert_base64}
-    server: https://localhost:${api_server_port}
+    server: https://${api_hostname}:${api_server_port}
   name: from-scratch
 contexts:
 - context:

@@ -16,7 +16,7 @@ _**Disclaimer**: Work in progress, not all security measures are in place_
 
 ```sh
 KUBE_APISERVER_PORT=8443 docker-compose up -d
-kubectl --kubeconfig=certs/output/kubeconfig get nodes
+kubectl --kubeconfig=certs/output/admin_kubeconfig get nodes
 ```
 
 ## To hit the API in a browser

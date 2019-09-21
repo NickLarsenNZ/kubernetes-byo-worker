@@ -40,3 +40,20 @@ resource "local_file" "proxy_private" {
   content  = "${tls_private_key.proxy.private_key_pem}"
   filename = "${path.module}/output/proxy_private.pem"
 }
+
+data "template_file" "proxy_kubeconfig" {
+  template = "${file("${path.module}/kubeconfig.tpl")}"
+
+  vars = {
+    ca_cert_base64     = "${base64encode(tls_self_signed_cert.ca.cert_pem)}"
+    api_hostname       = "kube-apiserver"
+    api_server_port    = "6443"
+    client_cert_base64 = "${base64encode(tls_locally_signed_cert.proxy.cert_pem)}"
+    client_key_base64  = "${base64encode(tls_private_key.proxy.private_key_pem)}"
+  }
+}
+
+resource "local_file" "proxy_kubeconfig" {
+  content  = "${data.template_file.proxy_kubeconfig.rendered}"
+  filename = "${path.module}/output/proxy_kubeconfig"
+}
