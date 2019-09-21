@@ -19,8 +19,8 @@ services:
         terraform apply tfplan
 
         cd output/
-        cp -v apiserver_*.pem ca_public.pem service-account-ca_public.pem /certs/apiserver/
-        cp -v cm_*.pem ca_*.pem service-account-ca_*.pem /certs/controller-manager/
+        cp -vf apiserver_*.pem ca_public.pem service-account-ca_public.pem /certs/apiserver/
+        cp -vf cm_*.pem ca_*.pem service-account-ca_*.pem cm_kubeconfig /certs/controller-manager/
     volumes:
       - ./certs:/tf
       - certs-apiserver:/certs/apiserver
@@ -52,29 +52,23 @@ services:
       - bootstrap-certs
       - etcd
 
-    kube-apiserver:
+  kube-controller-manager:
     restart: always
     # https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/kube-apiserver-amd64
-    image: k8s.gcr.io/kube-apiserver-amd64:v${KUBE_VERSION:-1.15.3}
+    image: k8s.gcr.io/kube-controller-manager-amd64:v${KUBE_VERSION:-1.15.3}
     command: 
       - kube-controller-manager
       - --leader-elect=true
       - --use-service-account-credentials=true 
-      - --root-ca-file=/run/config/pki/ca.crt 
+      - --root-ca-file=/run/config/pki/ca_public.pem
       - --cluster-signing-cert-file=/run/config/pki/ca_public.pem 
-      - --cluster-signing-key-file=/run/config/pki/ca_private.key 
-      - --address=127.0.0.1 
+      - --cluster-signing-key-file=/run/config/pki/ca_private.pem 
+      - --bind-address=127.0.0.1 
       - --controllers=*,bootstrapsigner,tokencleaner 
-      - --kubeconfig=/etc/kubernetes/controller-manager.conf 
-      - --service-account-private-key-file=/run/config/pki/sa.key
-
-      - --client-ca-file=/run/config/pki/ca_public.pem
-      - --kubelet-certificate-authority=/run/config/pki/ca_public.pem
-      - --kubelet-client-certificate=/run/config/pki/apiserver_public.pem
-      - --kubelet-client-key=/run/config/pki/apiserver_private.pem
-      - --service-account-key-file=/run/config/pki/service-account-ca_public.pem
-      - --tls-cert-file=/run/config/pki/apiserver_public.pem
-      - --tls-private-key-file=/run/config/pki/apiserver_private.pem
+      - --kubeconfig=/run/config/pki/cm_kubeconfig 
+      - --service-account-private-key-file=/run/config/pki/service-account-ca_private.pem
+      - --tls-cert-file=/run/config/pki/cm_public.pem
+      - --tls-private-key-file=/run/config/pki/cm_private.pem
     volumes:
       - certs-controller-manager:/run/config/pki
     networks:
