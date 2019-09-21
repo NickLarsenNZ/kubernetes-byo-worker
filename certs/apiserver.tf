@@ -32,6 +32,7 @@ resource "tls_cert_request" "apiserver" {
 
   dns_names = [
     "${var.apiserver_fqdn}",
+    "kube-apiserver",
     "kubernetes",
     "kubernetes.default",
     "kubernetes.default.svc",
