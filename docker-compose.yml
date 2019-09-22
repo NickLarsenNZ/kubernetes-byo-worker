@@ -22,11 +22,13 @@ services:
         cp -vf apiserver_*.pem ca_public.pem service-account-ca_public.pem /certs/apiserver/
         cp -vf cm_*.pem ca_*.pem service-account-ca_*.pem cm_kubeconfig /certs/controller-manager/
         cp -vf scheduler_kubeconfig /certs/scheduler/
+        cp -vf worker*.pem worker*_kubeconfig /certs/kubelet
     volumes:
       - ./certs:/tf
       - certs-apiserver:/certs/apiserver
       - certs-controller-manager:/certs/controller-manager
       - certs-scheduler:/certs/scheduler
+      - certs-kubelet:/certs/kubelet
 
   kube-apiserver:
     restart: always
@@ -120,3 +122,4 @@ volumes:
   certs-apiserver:
   certs-controller-manager:
   certs-scheduler:
+  certs-kubelet:
