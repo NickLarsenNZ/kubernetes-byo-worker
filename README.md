@@ -10,9 +10,11 @@ _**Disclaimer**: Work in progress, not all security measures are in place_
   - [x] etcd (insecure, not production ready)
   - [x] kube-apiserver (secure, not production ready)
   - [ ] kube-scheduler
-  - [ ] kube-controller-manager
+  - [x] kube-controller-manager
 
 ## Run for prototyping
+
+_**Note**: You might need to run a few times before it will work. This is because the certificates and kubeconfigs take some time, and docker-compose doesn't wait for init container dependencies to complete before starting the services. The same applies if you change the certs._
 
 ```sh
 KUBE_APISERVER_PORT=8443 docker-compose up -d
