@@ -54,21 +54,21 @@ services:
 
   kube-controller-manager:
     restart: always
-    # https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/kube-apiserver-amd64
+    # https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/kube-controller-manager-amd64
     image: k8s.gcr.io/kube-controller-manager-amd64:v${KUBE_VERSION:-1.15.3}
     command: 
       - kube-controller-manager
       - --leader-elect=true
-      - --use-service-account-credentials=true 
+      #- --use-service-account-credentials=true 
       - --root-ca-file=/run/config/pki/ca_public.pem
-      - --cluster-signing-cert-file=/run/config/pki/ca_public.pem 
-      - --cluster-signing-key-file=/run/config/pki/ca_private.pem 
-      - --bind-address=127.0.0.1 
-      - --controllers=*,bootstrapsigner,tokencleaner 
+      #- --cluster-signing-cert-file=/run/config/pki/ca_public.pem 
+      #- --cluster-signing-key-file=/run/config/pki/ca_private.pem 
+      - --bind-address=127.0.0.1
+      #- --controllers=*,bootstrapsigner,tokencleaner 
       - --kubeconfig=/run/config/pki/cm_kubeconfig 
       - --service-account-private-key-file=/run/config/pki/service-account-ca_private.pem
-      - --tls-cert-file=/run/config/pki/cm_public.pem
-      - --tls-private-key-file=/run/config/pki/cm_private.pem
+      #- --tls-cert-file=/run/config/pki/cm_public.pem
+      #- --tls-private-key-file=/run/config/pki/cm_private.pem
     volumes:
       - certs-controller-manager:/run/config/pki
     networks:
