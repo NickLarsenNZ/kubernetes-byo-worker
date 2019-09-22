@@ -9,7 +9,7 @@ variable "worker_prefix" {
 
 variable "worker_index_start" {
   description = "Worker hostname starting index"
-  default     = 0
+  default     = 1
 }
 
 variable "worker_index_zero_pad" {

@@ -43,3 +43,15 @@ resource "tls_cert_request" "worker" {
     "${format(local.hostname_format, count.index + var.worker_index_start)}.${var.worker_domain_name}",
   ]
 }
+
+resource "local_file" "worker_public" {
+  count           = "${var.worker_count}"
+  content  = "${tls_locally_signed_cert.worker.*.cert_pem[count.index]}"
+  filename = "${path.module}/output/${format(local.hostname_format, count.index + var.worker_index_start)}_public.pem"
+}
+
+resource "local_file" "worker_private" {
+  count           = "${var.worker_count}"
+  content  = "${tls_private_key.worker.*.private_key_pem[count.index]}"
+  filename = "${path.module}/output/${format(local.hostname_format, count.index + var.worker_index_start)}_private.pem"
+}
