@@ -4,4 +4,4 @@ terraform.tfstate*
 terraform.d
 .terraform
 tfplan
-kubeconfig
+*kubeconfig
