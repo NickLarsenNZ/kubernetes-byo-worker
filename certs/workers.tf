@@ -55,3 +55,22 @@ resource "local_file" "worker_private" {
   content  = "${tls_private_key.worker.*.private_key_pem[count.index]}"
   filename = "${path.module}/output/${format(local.hostname_format, count.index + var.worker_index_start)}_private.pem"
 }
+
+data "template_file" "worker_kubeconfig" {
+  count           = "${var.worker_count}"
+  template = "${file("${path.module}/kubeconfig.tpl")}"
+
+  vars = {
+    ca_cert_base64     = "${base64encode(tls_self_signed_cert.ca.cert_pem)}"
+    api_hostname       = "kube-apiserver"
+    api_server_port    = "6443"
+    client_cert_base64 = "${base64encode(tls_locally_signed_cert.worker.*.cert_pem[count.index])}"
+    client_key_base64  = "${base64encode(tls_private_key.worker.*.private_key_pem[count.index])}"
+  }
+}
+
+resource "local_file" "worker_kubeconfig" {
+  count           = "${var.worker_count}"
+  content  = "${data.template_file.worker_kubeconfig.*.rendered[count.index]}"
+  filename = "${path.module}/output/${format(local.hostname_format, count.index + var.worker_index_start)}_kubeconfig"
+}
