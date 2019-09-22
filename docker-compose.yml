@@ -21,10 +21,12 @@ services:
         cd output/
         cp -vf apiserver_*.pem ca_public.pem service-account-ca_public.pem /certs/apiserver/
         cp -vf cm_*.pem ca_*.pem service-account-ca_*.pem cm_kubeconfig /certs/controller-manager/
+        cp -vf scheduler_kubeconfig /certs/scheduler/
     volumes:
       - ./certs:/tf
       - certs-apiserver:/certs/apiserver
       - certs-controller-manager:/certs/controller-manager
+      - certs-scheduler:/certs/scheduler
 
   kube-apiserver:
     restart: always
@@ -76,6 +78,22 @@ services:
     depends_on:
       - kube-apiserver
 
+  kube-scheduler:
+    restart: always
+    # https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/kube-scheduler-amd64
+    image: k8s.gcr.io/kube-scheduler-amd64:v${KUBE_VERSION:-1.15.3}
+    command: 
+      - kube-scheduler
+      - --leader-elect=true 
+      - --bind-address=127.0.0.1
+      - --kubeconfig=/run/config/pki/scheduler_kubeconfig
+    volumes:
+      - certs-scheduler:/run/config/pki
+    networks:
+      - kube-master
+    depends_on:
+      - kube-apiserver
+
   etcd:
     restart: always
     # https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/etcd-amd64
@@ -101,3 +119,4 @@ volumes:
   etcd-data:
   certs-apiserver:
   certs-controller-manager:
+  certs-scheduler:
