@@ -114,6 +114,25 @@ services:
     depends_on:
       - bootstrap-certs
 
+  worker01:
+    restart: always
+    image: ...
+    command:
+      - kubelet
+      - --config=/var/lib/kubelet/kubelet-config.yaml
+      - --container-runtime=remote
+      - --container-runtime-endpoint=unix:///var/run/containerd/containerd.sock
+      - --image-pull-progress-deadline=2m
+      - --kubeconfig=/run/config/pki/worker01_kubeconfig
+      - --network-plugin=cni
+      - --register-node=true
+    volumes:
+      - certs-kubelet:/run/config/pki
+    networks:
+      - kube-master
+    depends_on:
+      - kube-apiserver
+
 networks:
   kube-master:
 
