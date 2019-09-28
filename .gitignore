@@ -5,3 +5,4 @@ terraform.d
 .terraform
 tfplan
 *kubeconfig
+**/*.tgz
