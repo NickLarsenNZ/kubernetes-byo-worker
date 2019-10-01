@@ -3,3 +3,6 @@ etcd:
   auth:
     rbac:
       enabled: false
+
+kube-apiserver:
+  enabled: true
