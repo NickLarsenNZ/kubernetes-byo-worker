@@ -4,6 +4,6 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: etcd.enabled
   - name: kube-apiserver
-    version: 0.1.0
-    repository: file://kube-apiserver/
+    version: ">=1.0.0"
+    repository: file://./charts/kube-apiserver/
     condition: kube-apiserver.enabled
