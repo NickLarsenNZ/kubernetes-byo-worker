@@ -33,21 +33,26 @@ spec:
           # - --kubelet-client-certificate=/run/config/pki/apiserver_public.pem
           # - --kubelet-client-key=/run/config/pki/apiserver_private.pem
           - --kubelet-https=true
+          #- --bind-port=8443
           # - --service-account-key-file=/run/config/pki/service-account-ca_public.pem
           # - --tls-cert-file=/run/config/pki/apiserver_public.pem
           # - --tls-private-key-file=/run/config/pki/apiserver_private.pem
           ports:
-            - name: http
-              containerPort: 80
+            - name: kube-apiserver
+              containerPort: 6443
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /healthz
+              port: kube-apiserver
+              scheme: HTTPS
+            initialDelaySeconds: 60
           readinessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /healthz
+              port: kube-apiserver
+              scheme: HTTPS
+            initialDelaySeconds: 60
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

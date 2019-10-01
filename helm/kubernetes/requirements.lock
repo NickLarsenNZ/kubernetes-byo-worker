@@ -1,9 +1,9 @@
 dependencies:
 - name: etcd
-  repository: https://charts.bitnami.com/bitnami
-  version: 4.3.7
+  repository: file://./subcharts/etcd
+  version: 1.0.0
 - name: kube-apiserver
-  repository: file://kube-apiserver/
-  version: 0.1.0
-digest: sha256:fb37ece9757cdc27f63f602ba3d3fecd0939699a94277195629d9a3222300d04
-generated: "2019-09-30T20:48:52.238741+13:00"
+  repository: file://./subcharts/kube-apiserver
+  version: 1.0.0
+digest: sha256:f623e47ffa79821fc3472d8f1e520e964f85ad32e382218f85e22752dbe8326b
+generated: "2019-10-01T19:48:34.190066183+13:00"

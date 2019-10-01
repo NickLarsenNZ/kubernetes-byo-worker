@@ -1,8 +1,5 @@
 etcd:
   enabled: true
-  auth:
-    rbac:
-      enabled: false
 
 kube-apiserver:
   enabled: true
