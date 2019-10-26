@@ -1,0 +1,9 @@
+namePrefix: local-
+commonLabels:
+  system: kubernetes-master
+  env: local
+bases:
+- ../../../base/etcd
+patches:
+- etcd_env.yml
+- etcd_volumes.yml

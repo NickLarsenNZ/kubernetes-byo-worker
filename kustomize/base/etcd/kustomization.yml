@@ -1,0 +1,6 @@
+commonLabels:
+  app: etcd
+resources:
+- statefulset.yml
+- service-headless.yml
+- service-discovery.yml
