@@ -1,7 +1,6 @@
 commonLabels:
   system: kubernetes-master
-  app: etcd
+  app: kube-apiserver
 resources:
 - statefulset.yml
-- service-headless.yml
-- service-discovery.yml
+- service.yml
