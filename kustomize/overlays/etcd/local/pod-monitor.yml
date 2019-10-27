@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: etcd
+  labels:
+    team: frontend
+spec:
+  selector:
+    matchLabels:
+      app: etcd
+  podMetricsEndpoints:
+  - port: client
