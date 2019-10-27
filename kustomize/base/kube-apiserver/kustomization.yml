@@ -1,0 +1,6 @@
+commonLabels:
+  system: kubernetes-master
+  app: kube-apiserver
+resources:
+- statefulset.yml
+- service.yml

@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kube-apiserver
+spec:
+  serviceName: kube-apiserver
+  updateStrategy:
+    type: RollingUpdate
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kube-apiserver
+  volumeClaimTemplates: []
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kube-apiserver
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: kube-apiserver
+        image: k8s.gcr.io/kube-apiserver-amd64:v1.16.2
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: ETCD_URL
+          value: "http://etcd-discovery:2379"
+        command: 
+        - kube-apiserver
+        - --etcd-servers=$(ETCD_URL)
+        - --authorization-mode=Node,RBAC
+        # - --client-ca-file=/run/config/pki/ca_public.pem
+        # - --kubelet-certificate-authority=/run/config/pki/ca_public.pem
+        # - --kubelet-client-certificate=/run/config/pki/apiserver_public.pem
+        # - --kubelet-client-key=/run/config/pki/apiserver_private.pem
+        - --kubelet-https=true
+        # - --service-account-key-file=/run/config/pki/service-account-ca_public.pem
+        # - --tls-cert-file=/run/config/pki/apiserver_public.pem
+        # - --tls-private-key-file=/run/config/pki/apiserver_private.pem
+        ports:
+        - name: kube-apiserver
+          containerPort: 6443
+          protocol: TCP
+        livenessProbe:
+            httpGet:
+              path: /healthz
+              port: kube-apiserver
+              scheme: HTTPS
+            initialDelaySeconds: 60
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: kube-apiserver
+            scheme: HTTPS
+          initialDelaySeconds: 60
