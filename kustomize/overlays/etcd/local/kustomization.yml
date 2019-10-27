@@ -4,6 +4,8 @@ commonLabels:
   env: local
 bases:
 - ../../../base/etcd
+resources:
+- pod-monitor.yml
 patches:
 - etcd_env.yml
 - etcd_volumes.yml
