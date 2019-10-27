@@ -1,4 +1,5 @@
 commonLabels:
+  system: kubernetes-master
   app: etcd
 resources:
 - statefulset.yml
