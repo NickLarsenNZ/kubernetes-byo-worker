@@ -1,0 +1,16 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: private-ca
+spec:
+  issuerRef:
+    name: local-selfsigning-issuer
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: public-ca
+spec:
+  issuerRef:
+    name: local-selfsigning-issuer

@@ -1,0 +1,18 @@
+commonLabels:
+  system: kubernetes-master
+  app: cert-manager
+resources:
+- private_ca_certificate.yml
+- public_ca_certificate.yml
+# secretGenerator:
+#   # generate a tls Secret for the private CA keypair
+# - name: ca-key-pair
+#   type: "kubernetes.io/tls"
+#   files:
+#     - secret/ca.crt
+#     - secret/tls.crt
+#     - secret/tls.key
+# generatorOptions:
+#   disableNameSuffixHash: true
+configurations:
+- cert-config.yml
