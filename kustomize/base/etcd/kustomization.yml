@@ -5,3 +5,22 @@ resources:
 - statefulset.yml
 - service-headless.yml
 - service-discovery.yml
+- peer_certificate.yml
+configurations:
+- kustomizeconfig.yml
+vars:
+- name: STATEFULSET_NAME
+  objref:
+    kind: StatefulSet
+    name: etcd
+    apiVersion: apps/v1
+- name: HEADLESS_SERVICE_NAME
+  objref:
+    kind: Service
+    name: etcd-headless
+    apiVersion: v1
+- name: DISCOVERY_SERVICE_NAME
+  objref:
+    kind: Service
+    name: etcd-discovery
+    apiVersion: v1

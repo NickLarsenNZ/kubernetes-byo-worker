@@ -1,0 +1,14 @@
+# Give hints to kustomize to transform the names under these paths
+# Only works for names we're managing
+nameReference:
+- kind: Certificate
+  apiVersion: cert-manager.io/v1alpha2
+  fieldSpecs:
+  - path: spec/secretName
+
+# We must specify which keys may contain a variable to interpolate
+varReference:
+- path: spec/dnsNames
+  kind: Certificate
+- path: spec/commonName
+  kind: Certificate
