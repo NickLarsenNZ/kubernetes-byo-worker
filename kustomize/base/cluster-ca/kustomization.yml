@@ -3,7 +3,9 @@ commonLabels:
   app: cert-manager
 resources:
 - private_ca_certificate.yml
+- private_issuer.yml
 - public_ca_certificate.yml
+- public_issuer.yml
 # secretGenerator:
 #   # generate a tls Secret for the private CA keypair
 # - name: ca-key-pair
