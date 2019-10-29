@@ -17,4 +17,4 @@ resources:
 # generatorOptions:
 #   disableNameSuffixHash: true
 configurations:
-- cert-config.yml
+- kustomizeconfig.yml

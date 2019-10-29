@@ -5,6 +5,8 @@ metadata:
 spec:
   secretName: public-ca
   commonName: "Kubernetes Public CA"
+  keyAlgorithm: ecdsa
+  keySize: 384
   isCA: true
   issuerRef:
     name: selfsigning-issuer
