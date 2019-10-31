@@ -1,0 +1,9 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: etcd-peers
+spec:
+  issuerRef:
+    name: local-private-ca
+---

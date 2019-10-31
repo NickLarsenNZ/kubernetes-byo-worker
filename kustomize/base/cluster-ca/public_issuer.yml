@@ -1,13 +1,7 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata:
-  name: public-ca-issuer
+  name: public-ca
 spec:
   ca:
-    secretName: $(PRIVATE_CERTIFICATE_NAME)
-vars:
-- name: PRIVATE_CERTIFICATE_NAME
-  objref:
-    kind: Certificate
-    name: private-ca
-    apiVersion: cert-manager.io/v1alpha2
+    secretName: public-ca

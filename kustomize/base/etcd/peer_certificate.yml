@@ -1,0 +1,21 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: etcd-peers
+spec:
+  secretName: etcd-peers
+  commonName: $(STATEFULSET_NAME)
+  dnsNames:
+  - $(STATEFULSET_NAME)-0.$(HEADLESS_SERVICE_NAME)
+  - $(STATEFULSET_NAME)-1.$(HEADLESS_SERVICE_NAME)
+  - $(STATEFULSET_NAME)-2.$(HEADLESS_SERVICE_NAME)
+  usages:
+  - digital signature
+  - key encipherment
+  - server auth
+  - client auth
+  issuerRef:
+    name: private-ca
+    kind: Issuer
+  duration: 26280h # 3 years
+  renewBefore: 17520h # 2 years
