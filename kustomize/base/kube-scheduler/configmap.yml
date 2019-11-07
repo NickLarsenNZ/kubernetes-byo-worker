@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kube-scheduler
+data:
+  kubeconfig: |
+    apiVersion: v1
+    kind: Config
+    clusters:
+    - cluster:
+        certificate-authority: /opt/pki/kube-apiserver/public/ca.crt
+        server: https://kube-apiserver:6443
+      name: kube-apiserver
+    contexts:
+    - context:
+        cluster: kube-apiserver
+        user: admin
+      name: default
+    current-context: default
+    preferences: {}
+    users:
+    - name: admin
+      user:
+        client-certificate-data: /opt/pki/kube-scheduler/private/tls.crt
+        client-key-data: /opt/pki/kube-scheduler/private/tls.key

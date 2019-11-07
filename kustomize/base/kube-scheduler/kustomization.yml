@@ -1,0 +1,6 @@
+commonLabels:
+  system: kubernetes-master
+  app: kube-scheduler
+resources:
+- deployment.yml
+- configmap.yml
