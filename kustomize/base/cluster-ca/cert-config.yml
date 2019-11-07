@@ -1,0 +1,6 @@
+
+nameReference:
+- kind: Certificate
+  apiVersion: cert-manager.io/v1alpha2
+  fieldSpecs:
+  - path: spec/secretName
