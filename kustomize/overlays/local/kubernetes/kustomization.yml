@@ -1,8 +1,0 @@
-namePrefix: local-
-commonLabels:
-  env: local
-bases:
-- ../cluster-ca
-- ../etcd
-- ../../../base/kube-apiserver
-- ../../../base/kube-scheduler

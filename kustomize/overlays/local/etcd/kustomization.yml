@@ -1,6 +1,0 @@
-bases:
-- ../../../base/etcd
-resources:
-#- pod-monitor.yml
-patches:
-- etcd_volumes.yml

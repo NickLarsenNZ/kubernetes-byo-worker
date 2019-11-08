@@ -1,3 +1,7 @@
+# It seems we must patch this since the resource is created in this overlay
+# which is ignoring any nameReference block in a kustomizeconfig.
+# Maybe look into patchesJSON2906:
+# https://github.com/kubernetes-sigs/kustomize/issues/1553
 ---
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate

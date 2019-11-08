@@ -1,0 +1,14 @@
+namePrefix: local-
+commonLabels:
+  env: local
+bases:
+- ../../base/cluster-ca
+- ../../base/etcd
+- ../../base/kube-apiserver
+- ../../base/kube-scheduler
+patches:
+- cluster-ca/ca_certificate_issuer.yml
+#- etcd/etcd_volumes.yml
+resources:
+- cluster-ca/clusterissuer.yml
+#- etcd/pod-monitor.yml
