@@ -1,7 +1,0 @@
-namePrefix: local-
-commonLabels:
-  env: local
-bases:
-- ../../../base/kube-scheduler
-# patches:
-# - etcd_env.yml
