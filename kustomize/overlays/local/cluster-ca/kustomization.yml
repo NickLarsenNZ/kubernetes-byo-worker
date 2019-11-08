@@ -1,6 +1,0 @@
-bases:
-- ../../../base/cluster-ca
-resources:
-- clusterissuer.yml
-patches:
-- ca_certificate_issuer.yml
