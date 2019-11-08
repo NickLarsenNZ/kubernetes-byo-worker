@@ -4,5 +4,5 @@ commonLabels:
 bases:
 - ../cluster-ca
 - ../etcd
-# - ../kube-apiserver
+- ../../../base/kube-apiserver
 # - ../kube-scheduler

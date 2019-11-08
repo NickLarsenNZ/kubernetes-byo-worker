@@ -23,7 +23,7 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: ETCD_URL
-          value: "http://etcd-discovery:2379"
+          value: "http://$(ETCD_HEADLESS_SERVICE_NAME):2379"
         command: 
         - kube-apiserver
         - --etcd-servers=$(ETCD_URL)
