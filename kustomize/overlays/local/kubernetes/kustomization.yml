@@ -5,4 +5,4 @@ bases:
 - ../cluster-ca
 - ../etcd
 - ../../../base/kube-apiserver
-# - ../kube-scheduler
+- ../../../base/kube-scheduler

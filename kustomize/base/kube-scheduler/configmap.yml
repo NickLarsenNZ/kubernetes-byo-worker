@@ -9,7 +9,7 @@ data:
     clusters:
     - cluster:
         certificate-authority: /opt/pki/kube-apiserver/public/ca.crt
-        server: https://kube-apiserver:6443
+        server: https://$(KUBE_APISERVER_SERVICE_NAME):6443
       name: kube-apiserver
     contexts:
     - context:

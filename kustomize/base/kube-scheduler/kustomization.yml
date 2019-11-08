@@ -4,3 +4,5 @@ commonLabels:
 resources:
 - deployment.yml
 - configmap.yml
+configurations:
+- kustomizeconfig.yml
