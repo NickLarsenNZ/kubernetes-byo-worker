@@ -15,7 +15,7 @@ spec:
       serviceAccountName: cluster-cert-manager-sa
       containers:
         - name: cert-manager
-          image: quay.io/jetstack/cert-manager-controller:v0.6.2
+          image: quay.io/jetstack/cert-manager-controller@sha256:9c442079a9c5d87d67d9c9b76f43ab66654ab38e8c24c649a397d64ccd46c0aa # For client auth key usage
           imagePullPolicy: IfNotPresent
           args:
           - --cluster-resource-namespace=$(POD_NAMESPACE)
