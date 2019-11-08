@@ -48,11 +48,11 @@ spec:
         - name: ETCD_DATA_DIR
           value: "/var/lib/etcd/data"
         - name: ETCD_ADVERTISE_CLIENT_URLS
-          value: "http://$(POD_NAME).etcd-headless:2379"
+          value: "http://$(POD_NAME).$(ETCD_HEADLESS_SERVICE_NAME):2379"
         - name: ETCD_LISTEN_CLIENT_URLS
           value: "http://0.0.0.0:2379"
         - name: ETCD_INITIAL_ADVERTISE_PEER_URLS
-          value: "http://$(POD_NAME).etcd-headless:2380"
+          value: "http://$(POD_NAME).$(ETCD_HEADLESS_SERVICE_NAME):2380"
         - name: ETCD_LISTEN_PEER_URLS
           value: "http://0.0.0.0:2380"
         # - name: ETCD_INITIAL_CLUSTER_TOKEN

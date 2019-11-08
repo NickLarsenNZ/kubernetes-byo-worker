@@ -5,6 +5,10 @@ nameReference:
   apiVersion: cert-manager.io/v1alpha2
   fieldSpecs:
   - path: spec/secretName
+- kind: Certificate
+  apiVersion: cert-manager.io/v1alpha2
+  fieldSpecs:
+  - path: spec/issuerRef/name
 
 # We must specify which keys may contain a variable to interpolate
 varReference:
