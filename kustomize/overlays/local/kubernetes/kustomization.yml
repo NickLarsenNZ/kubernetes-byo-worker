@@ -3,6 +3,6 @@ commonLabels:
   env: local
 bases:
 - ../cluster-ca
-# - ../etcd
+- ../etcd
 # - ../kube-apiserver
 # - ../kube-scheduler
