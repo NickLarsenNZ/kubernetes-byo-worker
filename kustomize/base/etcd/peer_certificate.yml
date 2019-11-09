@@ -4,7 +4,7 @@ metadata:
   name: etcd-peers
 spec:
   secretName: etcd-peers
-  commonName: $(STATEFULSET_NAME)
+  commonName: $(ETCD_HEADLESS_SERVICE_NAME)
   dnsNames:
   - $(ETCD_STATEFULSET_NAME)-0.$(ETCD_HEADLESS_SERVICE_NAME)
   - $(ETCD_STATEFULSET_NAME)-1.$(ETCD_HEADLESS_SERVICE_NAME)
