@@ -19,8 +19,8 @@ vars:
     kind: Service
     name: etcd-headless
     apiVersion: v1
-# - name: ETCD_DISCOVERY_SERVICE_NAME
-#   objref:
-#     kind: Service
-#     name: etcd-discovery
-#     apiVersion: v1
+- name: ETCD_DISCOVERY_SERVICE_NAME
+  objref:
+    kind: Service
+    name: etcd-discovery
+    apiVersion: v1
