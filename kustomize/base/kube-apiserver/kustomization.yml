@@ -4,3 +4,9 @@ commonLabels:
 resources:
 - statefulset.yml
 - service.yml
+vars:
+- name: KUBE_APISERVER_SERVICE_NAME
+  objref:
+    kind: Service
+    name: kube-apiserver
+    apiVersion: v1

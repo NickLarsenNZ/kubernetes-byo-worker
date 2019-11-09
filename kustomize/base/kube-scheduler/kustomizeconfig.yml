@@ -1,0 +1,4 @@
+# We must specify which keys may contain a variable to interpolate
+varReference:
+- path: data
+  kind: ConfigMap
