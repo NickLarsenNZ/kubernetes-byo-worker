@@ -24,3 +24,10 @@ vars:
     kind: Service
     name: etcd-discovery
     apiVersion: v1
+- name: ETCD_PEER_CERT_SECRET_NAME
+  objref:
+    kind: Certificate
+    name: etcd-peers
+    apiVersion: cert-manager.io/v1alpha2
+  fieldref:
+    fieldpath: spec.secretName

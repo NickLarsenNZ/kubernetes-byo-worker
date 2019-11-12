@@ -36,11 +36,6 @@ spec:
         # - --trusted-ca-file=/var/lib/etcd/certs/ca-client.crt
         # - --cert-file=/var/lib/etcd/certs/infra0-client.crt
         # - --key-file=/var/lib/etcd/certs/infra0-client.key
-        # - --peer-auto-tls # or ...
-        # - --peer-client-cert-auth
-        # - --peer-trusted-ca-file=ca-peer.crt
-        # - --peer-cert-file=/var/lib/etcd/certs/infra1-peer.crt
-        # - --peer-key-file=/var/lib/etcd/certs/infra1-peer.key
         - name: ETCDCTL_API
           value: "3"
         - name: ETCD_NAME
@@ -52,9 +47,17 @@ spec:
         - name: ETCD_LISTEN_CLIENT_URLS
           value: "http://0.0.0.0:2379"
         - name: ETCD_INITIAL_ADVERTISE_PEER_URLS
-          value: "http://$(POD_NAME).$(ETCD_HEADLESS_SERVICE_NAME):2380"
+          value: "https://$(POD_NAME).$(ETCD_HEADLESS_SERVICE_NAME):2380"
         - name: ETCD_LISTEN_PEER_URLS
-          value: "http://0.0.0.0:2380"
+          value: "https://0.0.0.0:2380"
+        - name: ETCD_PEER_CLIENT_CERT_AUTH
+          value: "1"
+        - name: ETCD_PEER_TRUSTED_CA_FILE
+          value: "/var/lib/etcd/certs/peer/ca.crt"
+        - name: ETCD_PEER_CERT_FILE
+          value: "/var/lib/etcd/certs/peer/tls.crt"
+        - name: ETCD_PEER_KEY_FILE
+          value: "/var/lib/etcd/certs/peer/tls.key"
         # - name: ETCD_INITIAL_CLUSTER_TOKEN
         # # Todo: get this from a Secret
         #   value: "etcd-cluster-k8s"
@@ -85,3 +88,10 @@ spec:
             - endpoint 
             - health
           initialDelaySeconds: 60
+        volumeMounts:
+        - mountPath: /var/lib/etcd/certs/peer
+          name: etcd-peer-certs
+      volumes:
+      - name: etcd-peer-certs
+        secret:
+          secretName: $(ETCD_PEER_CERT_SECRET_NAME)
