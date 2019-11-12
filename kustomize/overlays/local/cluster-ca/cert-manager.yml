@@ -1,17 +1,13 @@
 # Helm overrides for a local cert-manager
-# Images SHAs are used to get a fix for key usages that hasn't been released yet.
-# See: https://github.com/jetstack/cert-manager/pull/2260
-# Also https://raw.githubusercontent.com/jetstack/cert-manager/62c4e0b6eb1f4b598f167fe0d54fc410309144a4/deploy/manifests/00-crds.yaml
-# helm upgrade --install my-release --namespace cert-manager jetstack/cert-manager -f kustomize/overlays/local/cluster-ca/cert-manager.yml
 cainjector:
   image:
-    repository: quay.io/jetstack/cert-manager-cainjector@sha256
-    tag: 99908c4de93e3c8e076a3da52bb81c92e7e551cb754e861f390247a7326af42b
+    repository: quay.io/jetstack/cert-manager-cainjector
+    tag: canary
 image:
-  repository: quay.io/jetstack/cert-manager-controller@sha256
-  tag: 9c442079a9c5d87d67d9c9b76f43ab66654ab38e8c24c649a397d64ccd46c0aa
+  repository: quay.io/jetstack/cert-manager-controller
+  tag: canary
 webhook:
   enabled: false
   image:
-    repository: quay.io/jetstack/cert-manager-webhook@sha256
-    tag: 76eb5fbff10ae48a6cf1f608ce78394d874ab6dfbc1c8b9cc3bdc427d395cecf
+    repository: quay.io/jetstack/cert-manager-webhook
+    tag: canary
