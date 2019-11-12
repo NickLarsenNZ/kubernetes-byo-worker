@@ -1,5 +1,7 @@
 # Kubernetes BYO Worker
 
+***Using kustomize instead of helm. README to be updated***
+
 _**Disclaimer**: Work in progress, not all security measures are in place_
 
 - Launch Kubernetes Master Services with ease
