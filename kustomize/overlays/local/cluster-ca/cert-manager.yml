@@ -1,8 +1,4 @@
 # Helm overrides for a local cert-manager
-# Images SHAs are used to get a fix for key usages that hasn't been released yet.
-# See: https://github.com/jetstack/cert-manager/pull/2260
-# Also https://raw.githubusercontent.com/jetstack/cert-manager/62c4e0b6eb1f4b598f167fe0d54fc410309144a4/deploy/manifests/00-crds.yaml
-# helm upgrade --install my-release --namespace cert-manager jetstack/cert-manager -f kustomize/overlays/local/cluster-ca/cert-manager.yml
 cainjector:
   image:
     repository: quay.io/jetstack/cert-manager-cainjector
