@@ -6,6 +6,7 @@ spec:
   serviceName: etcd-headless
   updateStrategy:
     type: RollingUpdate
+  podManagementPolicy: Parallel
   replicas: 3
   selector:
     matchLabels:
@@ -40,10 +41,10 @@ spec:
           value: "3"
         - name: ETCD_NAME
           value: "$(POD_NAME)"
-        - name: ETCD_INITIAL_CLUSTER_STATE
-          value: new
+        # - name: ETCD_INITIAL_CLUSTER_STATE
+        #   value: new
         - name: ETCD_INITIAL_CLUSTER
-          value: "https://$(ETCD_STATEFULSET_NAME)-0.$(ETCD_HEADLESS_SERVICE_NAME):2380"
+          value: "$(ETCD_STATEFULSET_NAME)-0=https://$(ETCD_STATEFULSET_NAME)-0.$(ETCD_HEADLESS_SERVICE_NAME):2380,$(ETCD_STATEFULSET_NAME)-1=https://$(ETCD_STATEFULSET_NAME)-1.$(ETCD_HEADLESS_SERVICE_NAME):2380,$(ETCD_STATEFULSET_NAME)-2=https://$(ETCD_STATEFULSET_NAME)-2.$(ETCD_HEADLESS_SERVICE_NAME):2380"
         - name: ETCD_DATA_DIR
           value: "/var/lib/etcd/data"
         - name: ETCD_ADVERTISE_CLIENT_URLS
