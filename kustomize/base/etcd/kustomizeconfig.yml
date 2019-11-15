@@ -15,5 +15,5 @@ varReference:
 - path: spec/dnsNames
   kind: Certificate
 - path: spec/commonName
-  kind: StatefulSet
+  kind: Certificate
 - path: spec/template/spec/volumes/secret/secretName
