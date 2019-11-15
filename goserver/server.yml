@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: server
+spec:
+  commonName: localhost
+  dnsNames:
+  - localhost
+  duration: 26280h
+  issuerRef:
+    kind: Issuer
+    name: local-private-ca
+  renewBefore: 17520h
+  secretName: server-cert
+  usages:
+  - key encipherment
+  - server auth
