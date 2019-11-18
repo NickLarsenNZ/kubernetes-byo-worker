@@ -41,8 +41,8 @@ spec:
           value: "3"
         - name: ETCD_NAME
           value: "$(POD_NAME)"
-        # - name: ETCD_INITIAL_CLUSTER_STATE
-        #   value: new
+        - name: ETCD_INITIAL_CLUSTER_STATE
+          value: new
         - name: ETCD_INITIAL_CLUSTER
           value: "$(ETCD_STATEFULSET_NAME)-0=https://$(ETCD_STATEFULSET_NAME)-0.$(ETCD_HEADLESS_SERVICE_NAME):2380,$(ETCD_STATEFULSET_NAME)-1=https://$(ETCD_STATEFULSET_NAME)-1.$(ETCD_HEADLESS_SERVICE_NAME):2380,$(ETCD_STATEFULSET_NAME)-2=https://$(ETCD_STATEFULSET_NAME)-2.$(ETCD_HEADLESS_SERVICE_NAME):2380"
         - name: ETCD_DATA_DIR
@@ -57,19 +57,17 @@ spec:
           value: "https://0.0.0.0:2380"
         - name: ETCD_PEER_CLIENT_CERT_AUTH
           value: "1"
-        - name: ETCD_PEER_TRUSTED_CA_FILE
-          value: "/var/lib/etcd/certs/peer/ca.crt"
-        - name: ETCD_PEER_CERT_FILE
-          value: "/var/lib/etcd/certs/peer/tls.crt"
-        - name: ETCD_PEER_KEY_FILE
-          value: "/var/lib/etcd/certs/peer/tls.key"
+        - name: ETCD_PEER_AUTO_TLS
+          value: "1"
+        # - name: ETCD_PEER_TRUSTED_CA_FILE
+        #   value: "/var/lib/etcd/certs/peer/ca.crt"
+        # - name: ETCD_PEER_CERT_FILE
+        #   value: "/var/lib/etcd/certs/peer/tls.crt"
+        # - name: ETCD_PEER_KEY_FILE
+        #   value: "/var/lib/etcd/certs/peer/tls.key"
         # - name: ETCD_INITIAL_CLUSTER_TOKEN
         # # Todo: get this from a Secret
         #   value: "etcd-cluster-k8s"
-        # - name: ETCD_INITIAL_CLUSTER_STATE
-        #   value: "new"
-        # - name: ETCD_INITIAL_CLUSTER
-        #   value: etcd-0=http://etcd-0.etcd-headless:2380,etcd-1=http://etcd-1.etcd-headless:2380,etcd-2=http://etcd-2.etcd-headless:2380
         command:
         - etcd
         ports:
